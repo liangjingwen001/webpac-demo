@@ -29,17 +29,52 @@ module.exports = {
     // loader的配置
     module: {
         rules: [
+            // {
+            //     // 语法检查，只检查自己写的代码，不检查第三方库 eslint-loader eslint
+            //     // 设置检查规则: package.json中eslintConfig中设置
+            //     // airbnb --> eslint-config-airbnb-base eslint-plugin-import eslint
+            //     // 在代码上加“// eslint-disable-next-line”就会俘虏额下一行代码的格式检查
+            //     test: /\.js$/,
+            //     exclude: /node_modules/,
+            //     loader: 'eslint-loader',
+            //     options: {
+            //         // 自动修复
+            //         fix: true
+            //     }
+            // },
+            /**
+             * js兼容性处理，
+             * 1.基本js兼容性处理：babel-loader @babel/preset-env @babel/core,不能处理promise等
+             * 2.全部兼容性处理：@babel/polyfill，只需要在js引入即可，缺点的文件包大大增大（import '@babel/polyfill'）
+             * 3.部分兼容性处理：core-js
+             * 结论：使用1，3种加起来即可
+             */
             {
-                // 语法检查，只检查自己写的代码，不检查第三方库 eslint-loader eslint
-                // 设置检查规则: package.json中eslintConfig中设置
-                // airbnb --> eslint-config-airbnb-base eslint-plugin-import eslint
-                // 在代码上加“// eslint-disable-next-line”就会俘虏额下一行代码的格式检查
                 test: /\.js$/,
                 exclude: /node_modules/,
-                loader: 'eslint-loader',
+                loader: 'babel-loader',
                 options: {
-                    // 自动修复
-                    fix: true
+                    presets: [
+                        [
+                            '@babel/preset-env',
+                        {
+                            // 按需加载
+                            useBuiltIns: 'usage',
+                            // 指定core-js版本
+                            corejs: {
+                                version: 3
+                            },
+                            // 指定浏览器版本
+                            targets: {
+                                chrome: '60',
+                                firefox: '90',
+                                ie: '9',
+                                safari: '10',
+                                edge: '17'
+                            }
+                        }
+                        ]
+                    ]
                 }
             },
             {
@@ -121,7 +156,14 @@ module.exports = {
         // 功能：默认会创建一个空的html文件，自动引入打包输出的所有资源（JS/CSS）
         new HtmlWebpackPlugin({
             //复制./src/index.html文件，自动引入打包输出的所有资源（JS/CSS）
-            template: './src/index.html'
+            template: './src/index.html',
+            // 压缩html代码
+            minify: {
+                // 移除空格
+                collapseWhitespace: true,
+                // 移除注释
+                removeComments: true
+            }
         }),
         new MiniCssExtractPlugin({
             // 对输出的css文件进行重命名和路径指定
@@ -130,7 +172,7 @@ module.exports = {
         // 压缩css
         new OptimizeCssAssetsWebpackPlugin()
     ],
-    // 模式，development和production
+    // 模式，development和production(生产环境会自动压缩js代码)
     mode: 'development',
 
     // 开发服务器devServer: 用来自动化（自动编辑，自动打开浏览器，自动刷新浏览器）
