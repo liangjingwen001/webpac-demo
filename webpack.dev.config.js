@@ -18,6 +18,7 @@ process.env.NODE_ENV = 'development';
 
 // webpack配置文件
 module.exports = {
+    // 解决webpack5在package.json中加了browserslist后热更新功能失效的问题
     target: "web",
     entry: ['./src/index.js', './src/index.html'],
     output: {
