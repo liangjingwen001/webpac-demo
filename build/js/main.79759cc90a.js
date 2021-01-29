@@ -1,0 +1,1 @@
+!function(){"use strict";var n=JSON.parse('{"name":"zhangsan","age":12}');console.log(32),console.log(n)}();

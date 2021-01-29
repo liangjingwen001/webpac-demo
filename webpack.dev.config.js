@@ -89,5 +89,25 @@ module.exports = {
         open: true,
         // 模块热更新
         hot: true
-    }
+    },
+    devtool: 'eval-source-map'
 }
+
+/**
+ * source-map：一种提供原代码和构建后代码映射关系的技术
+ * 
+ * [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map
+ * 
+ * source-map：外联（提示错误代码在原代码里面的正确位置）
+ * inline-source-map：内联（只生成一个source-map，提示错误代码在原代码里面的正确位置）
+ * hidden-source-map：外联（只能提示错误代码在构建后代码里面的位置）
+ * eval-source-map：内联（每一个文件都生成对应的source-map）
+ * nosources-source-map：外联   
+ * cheap-source-map：外联
+ * cheap-module-source-map：外联（module会将loader的source map假如）
+ * 
+ * 内联和外联的区别：1.外联外部生成了文件，内联内有；2.内联构建速度快
+ * 开发环境：eval-source-map（最优）
+ * 生产环境：
+ * 
+ */
