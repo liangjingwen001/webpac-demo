@@ -47,7 +47,7 @@ module.exports = {
              * 1.基本js兼容性处理：babel-loader @babel/preset-env @babel/core,不能处理promise等
              * 2.全部兼容性处理：@babel/polyfill，只需要在js引入即可，缺点的文件包大大增大（import '@babel/polyfill'）
              * 3.部分兼容性处理：core-js
-             * 结论：使用1，3种加起来即可
+             * 结论：使用1，3种加起来即可。
              */
             {
                 test: /\.js$/,
